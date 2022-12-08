@@ -47,4 +47,34 @@ app.MapGet("/function", LocalFunction);
 // GET /api/products
 app.MapGet("/api/products", (IProductRepository repository) => repository.GetAll());
 
+// GET /api/products/{id}
+
+/*
+app.MapGet("/api/products/{id:int}", (int id, IProductRepository repository) => {
+    
+    var product = repository.Get(id);
+
+    if (product == null)
+        return Results.NotFound();
+
+    return Results.Ok(product);
+
+});
+*/
+
+/* Przykład z użyciem operatora is
+app.MapGet("/api/products/{id:int}", (int id, IProductRepository repository) => 
+    repository.Get(id) is Product product 
+    ? Results.Ok(product) 
+    : Results.NotFound());
+*/ 
+
+// Match Patterns
+app.MapGet("/api/products/{id:int}", (int id, IProductRepository repository) => 
+    repository.Get(id) switch
+    {
+        Product product => Results.Ok(product),        
+        null => Results.NotFound()        
+    });
+
 app.Run();
