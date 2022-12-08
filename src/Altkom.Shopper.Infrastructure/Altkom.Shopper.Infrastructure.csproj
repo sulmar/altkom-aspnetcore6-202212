@@ -1,14 +1,13 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
     <ProjectReference Include="..\Altkom.Shopper.Domain\Altkom.Shopper.Domain.csproj" />
-    <ProjectReference Include="..\Altkom.Shopper.Infrastructure\Altkom.Shopper.Infrastructure.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
 </Project>

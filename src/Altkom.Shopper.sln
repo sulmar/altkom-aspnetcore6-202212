@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Altkom.Shopper.Api", "Altko
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Altkom.Shopper.ConsoleClient", "Altkom.Shopper.ConsoleClient\Altkom.Shopper.ConsoleClient.csproj", "{576CEC6C-8601-4CEE-AB97-1F86F5B2417D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Altkom.Shopper.Domain", "Altkom.Shopper.Domain\Altkom.Shopper.Domain.csproj", "{B86D3897-AC5B-4CCC-9510-757DD43E9570}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Altkom.Shopper.Infrastructure", "Altkom.Shopper.Infrastructure\Altkom.Shopper.Infrastructure.csproj", "{C2D7C849-114E-4A2C-9A52-5F4D478B035D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +28,13 @@ Global
 		{576CEC6C-8601-4CEE-AB97-1F86F5B2417D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{576CEC6C-8601-4CEE-AB97-1F86F5B2417D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{576CEC6C-8601-4CEE-AB97-1F86F5B2417D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B86D3897-AC5B-4CCC-9510-757DD43E9570}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B86D3897-AC5B-4CCC-9510-757DD43E9570}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B86D3897-AC5B-4CCC-9510-757DD43E9570}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B86D3897-AC5B-4CCC-9510-757DD43E9570}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2D7C849-114E-4A2C-9A52-5F4D478B035D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2D7C849-114E-4A2C-9A52-5F4D478B035D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2D7C849-114E-4A2C-9A52-5F4D478B035D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2D7C849-114E-4A2C-9A52-5F4D478B035D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
