@@ -1,4 +1,5 @@
 ﻿using Altkom.Shopper.Domain;
+using Altkom.Shopper.Domain.SearchCriterias;
 
 namespace Altkom.Shopper.Infrastructure;
 
@@ -27,14 +28,37 @@ public class InMemoryProductRepository : IProductRepository
         return null;
     }
 
+    public IEnumerable<Product> Get(ProductSearchCriteria searchCriteria)
+    {
+        IQueryable<Product> query = products.Values.AsQueryable();
+
+        if (searchCriteria.From.HasValue)
+            query = query.Where(p => p.Price >= searchCriteria.From);
+
+        if (searchCriteria.To.HasValue)
+            query = query.Where(p => p.Price <= searchCriteria.To);            
+
+        if (!string.IsNullOrWhiteSpace(searchCriteria.Color))
+            query = query.Where(p => p.Color.Equals(searchCriteria.Color, StringComparison.OrdinalIgnoreCase));            
+
+        var results = query.ToList();
+
+        return results;
+    }
+
     public IEnumerable<Product> GetAll()
     {
         return products.Values;
     }
 
+    public Product GetByBarcode(string barcode)
+    {
+       return products.Values.SingleOrDefault(p=>p.Barcode == barcode);
+    }
+
     public IEnumerable<Product> GetByColor(string color)
     {
-        throw new NotImplementedException();
+        return products.Values.Where(p => p.Color.Equals(color, StringComparison.OrdinalIgnoreCase));
     }
 
     public void Remove(int id)
