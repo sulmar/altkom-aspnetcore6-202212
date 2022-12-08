@@ -1,0 +1,9 @@
+
+@host = https://localhost:7119
+
+###
+GET {{host}}/api/products
+
+###
+GET {{host}}/api/products/1
+Content-Type: application/json
