@@ -18,12 +18,14 @@ var builder = WebApplication.CreateBuilder();
 // builder.Logging.AddJsonConsole();
 
 // dotnet add package Serilog.AspNetCore
+// dotnet add package Serilog.Sinks.Seq
 builder.Host.UseSerilog((context, logger) =>
 {
     logger.MinimumLevel.Debug();
     logger.WriteTo.Console();   
     logger.WriteTo.File("logs/log.txt", rollingInterval: RollingInterval.Day);
     logger.WriteTo.File(new CompactJsonFormatter(), "logs/log.json");
+    logger.WriteTo.Seq(builder.Configuration["SeqHost"]);
 });
 
 builder.Services.AddSingleton<IProductRepository, InMemoryProductRepository>();

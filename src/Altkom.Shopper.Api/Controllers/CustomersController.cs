@@ -69,6 +69,16 @@ public class CustomersController : ControllerBase
     [HttpPost]
     public ActionResult<Customer> Post([FromBody] Customer customer, [FromServices] IMessageService messageService)
     {
+        var existCustomer = repository.Get(1);
+
+        if (existCustomer != null)
+            ModelState.AddModelError("customer", "Customer with email exists");
+        
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
         repository.Add(customer);
         messageService.Send($"Dodano {customer}");
 
