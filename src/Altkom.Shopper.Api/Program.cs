@@ -62,6 +62,7 @@ builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnC
 builder.Configuration.AddJsonFile($"appsettings.{environmentName}.json", optional: true); // default
 builder.Configuration.AddXmlFile("appsettings.xml", optional: true);
 builder.Configuration.AddIniFile("appsettings.ini", optional: true); 
+builder.Configuration.AddUserSecrets<Program>();
 builder.Configuration.AddEnvironmentVariables("Shopper"); // Shopper_Qty        // default
 builder.Configuration.AddCommandLine(args); // --NbpApi__Url = nbp.pl           // default
 builder.Configuration.AddInMemoryCollection(new Dictionary<string, string>
@@ -145,6 +146,11 @@ app.MapPatch("/api/products/{id}", (int id, IProductRepository repository) =>
 
 
 // GET api/shops?loc=52.01,28.04
+
+if (builder.Environment.IsDevelopment())
+{
+    app.MapGet("api/developer", () => "four only developer's eyes");
+}
 
 
 app.Run();
