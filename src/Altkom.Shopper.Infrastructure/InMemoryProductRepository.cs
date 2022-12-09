@@ -76,3 +76,64 @@ public class InMemoryProductRepository : IProductRepository
         products.Add(product.Id, product);
     }
 }
+
+
+public class InMemoryEntityRepository<TEntity> : IEntityRepository<TEntity>
+    where TEntity : BaseEntity
+{
+    protected readonly IDictionary<int, TEntity> entities;
+
+    public InMemoryEntityRepository(IEnumerable<TEntity> entities)
+    {
+        this.entities = entities.ToDictionary(p => p.Id);
+    }
+
+    public virtual void Add(TEntity entity)
+    {
+        int id = entities.Max(p => p.Key);
+
+        entity.Id = ++id;
+
+        entities.Add(entity.Id, entity);
+    }
+
+    public virtual TEntity Get(int id)
+    {
+        if (entities.TryGetValue(id, out TEntity entity))
+        {
+            return entity;
+        }
+        
+        return null;
+    }
+    
+
+    public virtual IEnumerable<TEntity> GetAll()
+    {
+        return entities.Values;
+    }
+
+    public virtual void Remove(int id)
+    {
+        entities.Remove(id);
+    }
+
+    public virtual void Update(TEntity entity)
+    {
+        Remove(entity.Id);
+        entities.Add(entity.Id, entity);
+    }
+}
+
+public class InMemoryCustomerRepository : InMemoryEntityRepository<Customer>, ICustomerRepository
+{
+    public InMemoryCustomerRepository(IEnumerable<Customer> entities) : base(entities)
+    {
+    }
+
+    public override void Remove(int id)
+    {
+        var customer = Get(id);
+        customer.IsRemoved = false;
+    }
+}

@@ -3,6 +3,7 @@ using System.Text.Json.Serialization;
 using Altkom.Shopper.Domain;
 using Altkom.Shopper.Domain.SearchCriterias;
 using Altkom.Shopper.Infrastructure;
+using Bogus;
 using Microsoft.AspNetCore.Http.Json;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 var builder = WebApplication.CreateBuilder();
 
 builder.Services.AddSingleton<IProductRepository, InMemoryProductRepository>();
+builder.Services.AddSingleton<ICustomerRepository, InMemoryCustomerRepository>();
 
 builder.Services.AddSingleton<IEnumerable<Product>>(sp => new List<Product>
 {
@@ -22,10 +24,29 @@ builder.Services.AddSingleton<IEnumerable<Product>>(sp => new List<Product>
     new Product { Id = 5, Name = "Product 5", Barcode = "5555", Color = "Green", Size = ProductSize.XL, Price = 10.99m },
 });
 
+// dotnet add package Bogus
+builder.Services.AddSingleton<IEnumerable<Customer>>(sp => 
+{
+    var customers = new Faker<Customer>()
+        .UseSeed(1)
+        .StrictMode(true)
+        .RuleFor(p => p.Id, f => f.IndexFaker)
+        .RuleFor(p => p.FirstName, f => f.Person.FirstName)
+        .RuleFor(p => p.LastName, f => f.Person.LastName)
+        .RuleFor(p => p.Email, (f, customer) => $"{customer.FirstName}.{customer.LastName}@domain.com")   // {firstname}.{lastname}@domain.com
+        .RuleFor(p => p.IsRemoved, f => f.Random.Bool(0.2f))
+        .Generate(100);
+
+    return customers;
+
+});
+
 builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =>
 {
     options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
 });
+
+builder.Services.AddControllers();
 
 var app = builder.Build();
 
@@ -48,8 +69,8 @@ app.MapGet("/lambda", lambda);
 // GET /function
 app.MapGet("/function", LocalFunction);
 
-// GET /api/customers?lat={lat}&lng={lng}
-app.MapGet("/api/customers", (HttpRequest req, HttpResponse res) =>
+// GET /api/shops?lat={lat}&lng={lng}
+app.MapGet("/api/shops", (HttpRequest req, HttpResponse res) =>
 {    
     double.TryParse(req.Query["lat"], out double latitude);
     double.TryParse(req.Query["lng"], out double longitude);
@@ -62,15 +83,14 @@ app.MapGet("/api/vehicles", (HttpContext context) =>
  
 });
 
-// TODO: Post
-// TODO: Put
-// TODO: Patch
-// TODO: Delete
+// TODO: MVC
+
+app.MapControllers();
 
 // TODO: konfiguracja
 // TODO: środowisko
 
-// TODO: MVC
+
 
 // GET /api/products
  // app.MapGet("/api/products", (IProductRepository repository) => repository.GetAll());
