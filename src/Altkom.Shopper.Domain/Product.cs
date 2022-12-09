@@ -28,3 +28,7 @@ public enum ProductSize : byte
     L,
     XL
 }
+public class Payment : BaseEntity
+{
+    public decimal TotalAmount { get; set; }
+}
