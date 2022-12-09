@@ -15,7 +15,11 @@ public class InMemoryProductRepository : IProductRepository
 
     public void Add(Product product)
     {
-        throw new NotImplementedException();
+        int id = products.Max(p => p.Key);
+
+        product.Id = ++id;
+
+        products.Add(product.Id, product);
     }
 
     public Product Get(int id)
@@ -63,11 +67,12 @@ public class InMemoryProductRepository : IProductRepository
 
     public void Remove(int id)
     {
-        throw new NotImplementedException();
+        products.Remove(id);
     }
 
     public void Update(Product product)
     {
-        throw new NotImplementedException();
+        Remove(product.Id);
+        products.Add(product.Id, product);
     }
 }

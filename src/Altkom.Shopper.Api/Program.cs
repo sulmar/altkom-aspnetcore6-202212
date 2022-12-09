@@ -4,6 +4,7 @@ using Altkom.Shopper.Domain;
 using Altkom.Shopper.Domain.SearchCriterias;
 using Altkom.Shopper.Infrastructure;
 using Microsoft.AspNetCore.Http.Json;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 // var app = WebApplication.Create();
@@ -49,7 +50,7 @@ app.MapGet("/function", LocalFunction);
 
 // GET /api/customers?lat={lat}&lng={lng}
 app.MapGet("/api/customers", (HttpRequest req, HttpResponse res) =>
-{
+{    
     double.TryParse(req.Query["lat"], out double latitude);
     double.TryParse(req.Query["lng"], out double longitude);
 
@@ -103,7 +104,7 @@ app.MapGet("/api/products/{id:int:max(100)}", (int id, IProductRepository reposi
     {
         Product product => Results.Ok(product),        
         null => Results.NotFound()        
-    });
+    }).WithName("GetProductById");
 
 // Route Parameters
 app.MapGet("/api/products/{barcode:length(4)}", (string barcode, IProductRepository repository) =>
@@ -131,6 +132,62 @@ app.MapGet("/api/products", (ProductSearchCriteria searchCriteria, [FromHeader] 
 app.MapGet("/api/products/search", (ProductIds id) => {
     return string.Join(" ", id.Ids);
 });
+
+app.MapPost("/api/products", (Product product, IProductRepository repository) =>
+{
+    repository.Add(product);
+
+    // zła praktyka
+    // return Results.Created($"https://localhost:7119/api/products/{product.Id}", product);
+    
+    // dobra praktyka
+    return Results.CreatedAtRoute("GetProductById", new { Id = product.Id }, product);
+});
+
+app.MapGet("/api/products/{id}/link", (int id, LinkGenerator linkGenerator) =>
+{   
+    var link = linkGenerator.GetPathByName("GetProductById", new { Id = id });
+
+    return Results.Ok($"The link to product {link}");
+});
+
+app.MapPut("/api/products/{id}", (int id, Product product, IProductRepository repository) =>
+{
+    if (id != product.Id)
+        return Results.BadRequest(new { ErrorMessage = "Invalid id"});
+
+    repository.Update(product);
+
+    return Results.NoContent();    
+});
+
+
+// app.MapMethods("/api/products/{id}", new [] { "PATCH" }, (int id) => {
+
+//     return Results.Ok($"Patch {id}");
+
+// });
+
+
+// JSON Patch (RFC 6902)
+// https://jsonpatch.com/
+// Content-Type: application/json-patch+json
+
+// dotnet add package Microsoft.AspNetCore.JsonPatch --version 6.0.10
+app.MapPatch("/api/products/{id}", (int id, IProductRepository repository) =>
+{
+    JsonPatchDocument<Product> patchDocument;
+
+    var product = repository.Get(id);
+
+    // TODO: jsonpatch
+    // patchDocument.ApplyTo(product);
+
+    return Results.Ok($"Patch {id}");
+});
+
+// JSON Merge Patch (RFC 7386)
+// https://github.com/Morcatko/Morcatko.AspNetCore.JsonMergePatch
 
 // od .NET 7
 // app.MapGet("/api/products/search", (int[] id) => { });
