@@ -1,5 +1,6 @@
 ﻿using Altkom.Shopper.Domain;
 using Altkom.Shopper.Domain.SearchCriterias;
+using Microsoft.Extensions.Options;
 
 namespace Altkom.Shopper.Infrastructure;
 
@@ -139,10 +140,25 @@ public class InMemoryCustomerRepository : InMemoryEntityRepository<Customer>, IC
 }
 
 
+public class EmailMessageServiceOptions
+{
+    public string Host { get; set; }
+    public string Login { get; set; }
+    public string Password { get; set; }
+}
+
+// dotnet add package Microsoft.Extensions.Options --version 6.0.0
 public class EmailMessageService : IMessageService
 {
+    private readonly EmailMessageServiceOptions options;
+
+    public EmailMessageService(IOptions<EmailMessageServiceOptions> options)
+    {
+        this.options = options.Value;
+    }
+
     public void Send(string message)
     {
-        System.Console.WriteLine($"Send email {message}");
+        System.Console.WriteLine($"Send email {message} via {options.Host}");
     }
 }

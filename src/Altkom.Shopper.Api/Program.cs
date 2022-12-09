@@ -50,6 +50,31 @@ builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =
 
 builder.Services.AddControllers();
 
+var npbApiUrl = builder.Configuration["NbpApi:Url"];
+var npbApiTable = builder.Configuration["NbpApi:Table"];
+var logLevel = builder.Configuration["Logging:LogLevel:Microsoft.AspNetCore"];
+var connectionString = builder.Configuration.GetConnectionString("ShopperConnectionString");
+
+// ASPNETCORE_ENVIRONMENT
+var environmentName = builder.Environment.EnvironmentName;
+
+builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true); // default
+builder.Configuration.AddJsonFile($"appsettings.{environmentName}.json", optional: true); // default
+builder.Configuration.AddXmlFile("appsettings.xml", optional: true);
+builder.Configuration.AddIniFile("appsettings.ini", optional: true); 
+builder.Configuration.AddEnvironmentVariables("Shopper"); // Shopper_Qty        // default
+builder.Configuration.AddCommandLine(args); // --NbpApi__Url = nbp.pl           // default
+builder.Configuration.AddInMemoryCollection(new Dictionary<string, string>
+{
+    ["NbpApi:Url"] = "tescik.nbp.pl",
+    ["NbpApi:Table"] = "C",
+});
+
+// YAML
+
+
+builder.Services.Configure<EmailMessageServiceOptions>(builder.Configuration.GetSection("SMTP"));
+
 var app = builder.Build();
 
 var lambda = () => "Hello from lambda variable";

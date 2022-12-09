@@ -70,7 +70,6 @@ public class CustomersController : ControllerBase
     public ActionResult<Customer> Post([FromBody] Customer customer, [FromServices] IMessageService messageService)
     {
         repository.Add(customer);
-
         messageService.Send($"Dodano {customer}");
 
         return CreatedAtRoute("GetCustomerById", new { Id = customer.Id}, customer);

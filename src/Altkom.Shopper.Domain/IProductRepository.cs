@@ -26,6 +26,11 @@ public interface ICustomerRepository : IEntityRepository<Customer>
 
 }
 
+public interface IPaymentRepository : IEntityRepository<Payment>
+{
+    
+}
+
 public interface IMessageService 
 {
     void Send(string message);
