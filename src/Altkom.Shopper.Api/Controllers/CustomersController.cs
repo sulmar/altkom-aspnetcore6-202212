@@ -71,6 +71,8 @@ public class CustomersController : ControllerBase
     {
         repository.Add(customer);
 
+        messageService.Send($"Dodano {customer}");
+
         return CreatedAtRoute("GetCustomerById", new { Id = customer.Id}, customer);
     }
     
