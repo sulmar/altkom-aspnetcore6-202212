@@ -137,3 +137,12 @@ public class InMemoryCustomerRepository : InMemoryEntityRepository<Customer>, IC
         customer.IsRemoved = false;
     }
 }
+
+
+public class EmailMessageService : IMessageService
+{
+    public void Send(string message)
+    {
+        System.Console.WriteLine($"Send email {message}");
+    }
+}

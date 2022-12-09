@@ -7,9 +7,31 @@ using Altkom.Shopper.Domain;
 
 namespace Altkom.Shopper.Api.Controllers;
 
-public class CustomersController
+// GET api/customers/man
+// GET api/customers/woman
+
+// GET api/customers/{id}/orders
+
+
+// customers 
+
+// orders ++
+
+
+// GET api/customers/{id}/orders/2021
+// GET api/customers/{id}/orders/2021/10
+// GET api/customers/{id}/orders/lastyear
+
+[Route("api/orders")]
+public class OrdersController
 {
-    private readonly ICustomerRepository repository;
+    // GET api/customers/{id}/orders
+}
+
+[Route("api/customers")]
+public class CustomersController : ControllerBase
+{
+    private readonly ICustomerRepository repository;    
 
     public CustomersController(ICustomerRepository repository)
     {
@@ -17,14 +39,14 @@ public class CustomersController
     }
 
     // GET api/hellomvc
-    [HttpGet("api/hellomvc")]
+    [HttpGet("~/api/hellomvc")]
     public string Hello()
     {
         return "Hello MVC";
     }
 
     // GET api/customers
-    [HttpGet("api/customers")]
+    [HttpGet]
     public IEnumerable<Customer> Get()
     {
         var customers = repository.GetAll();
@@ -33,15 +55,23 @@ public class CustomersController
     }
 
     // GET api/customers/{id}
-    [HttpGet("api/customers/{id:int}")]
+    [HttpGet("{id:int}", Name = "GetCustomerById")]
     public ActionResult<Customer> Get(int id)
     {
         var customer = repository.Get(id);
 
         if (customer == null)
-           return new NotFoundResult();
+           return NotFound();
 
-        return new OkObjectResult(customer);
+        return Ok(customer);
+    }
+
+    [HttpPost]
+    public ActionResult<Customer> Post([FromBody] Customer customer, [FromServices] IMessageService messageService)
+    {
+        repository.Add(customer);
+
+        return CreatedAtRoute("GetCustomerById", new { Id = customer.Id}, customer);
     }
     
 }

@@ -25,3 +25,8 @@ public interface ICustomerRepository : IEntityRepository<Customer>
 {
 
 }
+
+public interface IMessageService 
+{
+    void Send(string message);
+}

@@ -41,6 +41,8 @@ builder.Services.AddSingleton<IEnumerable<Customer>>(sp =>
 
 });
 
+builder.Services.AddSingleton<IMessageService, EmailMessageService>();
+
 builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =>
 {
     options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
