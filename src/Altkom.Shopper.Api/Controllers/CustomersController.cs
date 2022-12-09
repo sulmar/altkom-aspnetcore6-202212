@@ -34,11 +34,14 @@ public class CustomersController
 
     // GET api/customers/{id}
     [HttpGet("api/customers/{id:int}")]
-    public Customer Get(int id)
+    public ActionResult<Customer> Get(int id)
     {
         var customer = repository.Get(id);
 
-        return customer;
+        if (customer == null)
+           return new NotFoundResult();
+
+        return new OkObjectResult(customer);
     }
     
 }
