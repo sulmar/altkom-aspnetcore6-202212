@@ -1,5 +1,6 @@
 ﻿using Altkom.Shopper.Domain;
 using Altkom.Shopper.Domain.SearchCriterias;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace Altkom.Shopper.Infrastructure;
@@ -152,13 +153,21 @@ public class EmailMessageService : IMessageService
 {
     private readonly EmailMessageServiceOptions options;
 
-    public EmailMessageService(IOptions<EmailMessageServiceOptions> options)
+    // dotnet add package Microsoft.Extensions.Logging --version 6.0.0
+    private readonly ILogger<EmailMessageService> logger;
+
+    public EmailMessageService(IOptions<EmailMessageServiceOptions> options, ILogger<EmailMessageService> logger)
     {
         this.options = options.Value;
+        this.logger = logger;
     }
 
     public void Send(string message)
     {
-        System.Console.WriteLine($"Send email {message} via {options.Host}");
+        // zła praktyka (interpolacja)
+        // logger.LogDebug($"Send email {message} via {options.Host}");
+
+        // dobra praktyka
+        logger.LogDebug("Send email {message} via {host}", message, options.Host);
     }
 }

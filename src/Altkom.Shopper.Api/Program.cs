@@ -7,10 +7,24 @@ using Bogus;
 using Microsoft.AspNetCore.Http.Json;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
+using Serilog.Formatting.Compact;
 
 // var app = WebApplication.Create();
 
 var builder = WebApplication.CreateBuilder();
+
+// builder.Logging.AddConsole(); // default
+// builder.Logging.AddJsonConsole();
+
+// dotnet add package Serilog.AspNetCore
+builder.Host.UseSerilog((context, logger) =>
+{
+    logger.MinimumLevel.Debug();
+    logger.WriteTo.Console();   
+    logger.WriteTo.File("logs/log.txt", rollingInterval: RollingInterval.Day);
+    logger.WriteTo.File(new CompactJsonFormatter(), "logs/log.json");
+});
 
 builder.Services.AddSingleton<IProductRepository, InMemoryProductRepository>();
 builder.Services.AddSingleton<ICustomerRepository, InMemoryCustomerRepository>();
