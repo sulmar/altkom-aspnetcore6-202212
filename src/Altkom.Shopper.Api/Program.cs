@@ -96,7 +96,8 @@ builder.Services.Configure<EmailMessageServiceOptions>(builder.Configuration.Get
 
 var app = builder.Build();
 
-app.UseMiddleware<LoggerMiddleware>();
+app.UseLogger();
+app.UseSecretKey();
 
 // Under construction Middleware
 // app.Run(async context => 
@@ -105,17 +106,6 @@ app.UseMiddleware<LoggerMiddleware>();
 // });
 
 
-// Secret-Key Middleware (warstwa pośrednia)
-app.Use(async (context, next) => {
-
- if (context.Request.Headers.TryGetValue("X-Secret-Key", out var secretKey) && secretKey == "123")
- {
-    await next();
- }
- else
-    context.Response.StatusCode = StatusCodes.Status403Forbidden;
-
-});
 
 var lambda = () => "Hello from lambda variable";
 

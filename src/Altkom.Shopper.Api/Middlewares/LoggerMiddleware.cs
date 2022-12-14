@@ -23,3 +23,13 @@ public class LoggerMiddleware
     }
     
 }
+
+public static class LoggerMiddlewareExtensions
+{
+    public static WebApplication UseLogger(this WebApplication app)
+    {
+        app.UseMiddleware<LoggerMiddleware>();
+
+        return app;
+    }
+}
