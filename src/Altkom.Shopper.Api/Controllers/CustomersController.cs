@@ -23,12 +23,14 @@ namespace Altkom.Shopper.Api.Controllers;
 // GET api/customers/{id}/orders/lastyear
 
 [Route("api/orders")]
+
 public class OrdersController
 {
     // GET api/customers/{id}/orders
 }
 
 [Route("api/customers")]
+[ApiController]
 public class CustomersController : ControllerBase
 {
     private readonly ICustomerRepository repository;    

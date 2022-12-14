@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using Altkom.Shopper.Api.Middlewares;
 using Altkom.Shopper.Domain;
 using Altkom.Shopper.Domain.SearchCriterias;
 using Altkom.Shopper.Infrastructure;
@@ -95,15 +96,13 @@ builder.Services.Configure<EmailMessageServiceOptions>(builder.Configuration.Get
 
 var app = builder.Build();
 
-// Logger Middleware (warstwa pośrednia)
-app.Use(async (context, next) => 
-{
-    Console.WriteLine($"[{DateTime.Now}] {context.Request.Method} {context.Request.Path}");
-   
-    await next();
+app.UseMiddleware<LoggerMiddleware>();
 
-    System.Console.WriteLine($"[{DateTime.Now}] {context.Response.StatusCode}");
-});
+// Under construction Middleware
+// app.Run(async context => 
+// {
+//    await context.Response.WriteAsync("Under construction!");
+// });
 
 
 // Secret-Key Middleware (warstwa pośrednia)
