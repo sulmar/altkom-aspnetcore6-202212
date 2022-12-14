@@ -1,7 +1,27 @@
 
 @host = https://localhost:7119
 
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImthdGVAZG9tYWluLmNvbSIsImp0aSI6IjRiYWFkYmMyLTI2YTMtNGJmMC1iYmU3LWM0MGE3MWJkZWM5MCIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2RhdGVvZmJpcnRoIjoiMzEuMTIuMjAxMCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6WyJkZXZlbG9wZXIiLCJ0cmFpbmVyIl0sImV4cCI6MTY3MTAzMDk4OSwiaXNzIjoiYXV0aGFwaS5hbHRrb20ucGwiLCJhdWQiOiJkb21haW4uY29tIn0.-L3CM-7Tz_HskqMcAGByLn0M8DyEubEfNT7ITKU57kI
 
 ### Get customers
 GET {{host}}/api/customers
-X-Secret-Key: 123
+Authorization: Bearer {{token}}
+
+###
+
+
+GET {{host}}/api/customers/1
+Authorization: Bearer {{token}}
+
+###
+
+
+POST {{host}}/api/customers
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "FirstName":"John",
+    "LastName":"Smith",
+    "Email": "john.smith@domain.com"
+}

@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Altkom.Shopper.Domain;
 using Microsoft.AspNetCore.Mvc;
 
@@ -68,16 +69,25 @@ app.MapGet("/api/products/search", (ProductIds id) => {
     return string.Join(" ", id.Ids);
 });
 
-app.MapPost("/api/products", (Product product, IProductRepository repository) =>
+app.MapPost("/api/products", 
+    (Product product, 
+    IProductRepository repository, 
+    HttpContext context,
+    ILogger<Program> logger    
+    ) =>
 {
     repository.Add(product);
+
+    var email = context.User.FindFirstValue(ClaimTypes.Email);
+    
+    logger.LogInformation("Send email to <{email}> dodano {name}", email, product.Name);
 
     // zła praktyka
     // return Results.Created($"https://localhost:7119/api/products/{product.Id}", product);
     
     // dobra praktyka
     return Results.CreatedAtRoute("GetProductById", new { Id = product.Id }, product);
-});
+}).RequireAuthorization();
 
 app.MapGet("/api/products/{id}/link", (int id, LinkGenerator linkGenerator) =>
 {   

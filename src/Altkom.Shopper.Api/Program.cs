@@ -1,13 +1,19 @@
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
+using System.Text;
 using System.Text.Json.Serialization;
+using Altkom.Shopper.Api.Authorization;
 using Altkom.Shopper.Api.Middlewares;
 using Altkom.Shopper.Domain;
 using Altkom.Shopper.Domain.SearchCriterias;
 using Altkom.Shopper.Infrastructure;
 using Bogus;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Json;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using Serilog.Formatting.Compact;
 
@@ -32,33 +38,6 @@ builder.Host.UseSerilog((context, logger) =>
 builder.Services.AddSingleton<IProductRepository, InMemoryProductRepository>();
 builder.Services.AddSingleton<ICustomerRepository, InMemoryCustomerRepository>();
 builder.Services.AddSingleton<IUserRepository, InMemoryUserRepository>();
-
-builder.Services.AddSingleton<IEnumerable<User>>(sp => new List<User>
-{
-    new User { 
-        Id = 1, 
-        Username = "john", 
-        HashedPassword = "123", 
-        Email = "john@domain.com", 
-        DateOfBirth = DateTime.Parse("2000-12-31"),
-        },
-
-    new User { 
-        Id = 2, 
-        Username = "kate", 
-        HashedPassword = "321", 
-        Email = "kate@domain.com", 
-        DateOfBirth = DateTime.Parse("2010-12-31"),
-        },
-
-    new User { 
-        Id = 3, 
-        Username = "Bob", 
-        HashedPassword = "123", 
-        Email = "bob@domain.com", 
-        DateOfBirth = DateTime.Parse("1990-01-30"),
-        },
-});
 
 builder.Services.AddSingleton<IEnumerable<Product>>(sp => new List<Product>
 {
@@ -121,6 +100,39 @@ builder.Configuration.AddInMemoryCollection(new Dictionary<string, string>
 
 builder.Services.Configure<EmailMessageServiceOptions>(builder.Configuration.GetSection("SMTP"));
 
+// dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer --version 6.0.11
+builder.Services.AddAuthentication(options => 
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options => {
+    
+    string secretKey = "your-256-bit-secret";
+    string issuer = "authapi.altkom.pl";
+    string audience = "domain.com";
+
+    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+    {
+        ValidateAudience = true,
+        ValidAudience = audience,
+        ValidateIssuer = true,
+        ValidIssuer = issuer,
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
+    };
+
+});
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("Adult", policy => {
+        policy.RequireClaim(ClaimTypes.DateOfBirth);
+        policy.Requirements.Add(new MinimumAgeRequirement(18));         
+    });
+});
+
+builder.Services.AddTransient<IAuthorizationHandler, MinimumAgeAuthorizationHandler>();
+
 var app = builder.Build();
 
 app.UseLogger();
@@ -133,6 +145,8 @@ app.UseLogger();
 //    await context.Response.WriteAsync("Under construction!");
 // });
 
+app.UseAuthentication();
+app.UseAuthorization();
 
 
 var lambda = () => "Hello from lambda variable";
@@ -203,6 +217,7 @@ if (builder.Environment.IsDevelopment())
 {
     app.MapGet("api/developer", () => "four only developer's eyes");
 }
+
 
 
 app.Run();

@@ -1,5 +1,6 @@
 
 @host = https://localhost:7119
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG5AZG9tYWluLmNvbSIsImp0aSI6ImM1YzlkYzk0LTMwYTMtNDUzMC04MzZhLWQ4OWRmOTllYzMzYyIsImJpcnRoZGF0ZSI6IjMxLjEyLjIwMDAiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOlsiZGV2ZWxvcGVyIiwidHJhaW5lciJdLCJleHAiOjE2NzEwMjc2NzYsImlzcyI6ImF1dGhhcGkuYWx0a29tLnBsIiwiYXVkIjoiZG9tYWluLmNvbSJ9.nSYE0PH18PBuGCdfMzJQZ1g2riaS7DELaYhSfo_zXQQ
 
 @productId = 1
 @barcode = 1111
@@ -28,3 +29,16 @@ GET {{host}}/api/products/search?id=1,3,5
 ###
 
 GET {{host}}/api/customers?lat=52,01&lng=21,01
+
+###
+
+POST {{host}}/api/products
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "Name": "My product",
+    "Description": "Lorem ipsum",
+    "Color": "Blue",
+    "Price": 100
+}

@@ -2,6 +2,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Altkom.Shopper.Domain\Altkom.Shopper.Domain.csproj" />
+    <ProjectReference Include="..\Altkom.Shopper.Infrastructure\Altkom.Shopper.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.25.1" />
   </ItemGroup>
 
   <PropertyGroup>

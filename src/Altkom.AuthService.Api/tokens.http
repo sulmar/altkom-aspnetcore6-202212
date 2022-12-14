@@ -7,3 +7,15 @@ Content-Type: application/json
     "Login":"john",
     "Password":"123"
 }
+
+
+###
+
+POST {{host}}/api/tokens
+Content-Type: application/json
+
+{
+    "Login":"kate",
+    "Password":"321"
+}
+

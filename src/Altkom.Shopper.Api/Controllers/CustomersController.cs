@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Altkom.Shopper.Domain;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace Altkom.Shopper.Api.Controllers;
 
@@ -49,21 +50,36 @@ public class CustomersController : ControllerBase
     }
 
     // GET api/customers
+    // [Authorize(Roles = "manager")]
     [Authorize]
     [HttpGet]
     public ActionResult<IEnumerable<Customer>> Get()
     {
-        if (!this.User.Identity.IsAuthenticated)
-        {
-            return Unauthorized();
-        }
+        // if (!this.User.Identity.IsAuthenticated)
+        // {
+        //     return Unauthorized();
+        // }
 
         var customers = repository.GetAll();
+
+        if (this.User.IsInRole("trainer"))
+        {
+            return Ok(customers);
+        }
+        else
+        {
+            var activeCustomers = customers.Where(c=>!c.IsRemoved);
+
+            return Ok(activeCustomers);
+        }
+
+        
 
         return Ok(customers);
     }
 
     // GET api/customers/{id}
+    [Authorize("Adult")]
     [HttpGet("{id:int}", Name = "GetCustomerById")]
     public ActionResult<Customer> Get(int id)
     {
@@ -74,22 +90,24 @@ public class CustomersController : ControllerBase
 
         return Ok(customer);
     }
-
+    
     [HttpPost]
     public ActionResult<Customer> Post([FromBody] Customer customer, [FromServices] IMessageService messageService)
     {
         var existCustomer = repository.Get(1);
 
-        if (existCustomer != null)
-            ModelState.AddModelError("customer", "Customer with email exists");
+        // if (existCustomer != null)
+        //     ModelState.AddModelError("customer", "Customer with email exists");
         
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
 
+        string email = User.FindFirstValue(ClaimTypes.Email);
+
         repository.Add(customer);
-        messageService.Send($"Dodano {customer}");
+        messageService.Send($"Send email to <{email}> dodano {customer}");
 
         return CreatedAtRoute("GetCustomerById", new { Id = customer.Id}, customer);
     }
