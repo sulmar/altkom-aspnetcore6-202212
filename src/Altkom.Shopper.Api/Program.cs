@@ -31,6 +31,7 @@ builder.Host.UseSerilog((context, logger) =>
 builder.Services.AddSingleton<IProductRepository, InMemoryProductRepository>();
 builder.Services.AddSingleton<ICustomerRepository, InMemoryCustomerRepository>();
 
+
 builder.Services.AddSingleton<IEnumerable<Product>>(sp => new List<Product>
 {
     new Product { Id = 1, Name = "Product 1", Barcode = "1111", Color = "Blue", Size = ProductSize.M, Price = 100.99m },
@@ -93,6 +94,29 @@ builder.Configuration.AddInMemoryCollection(new Dictionary<string, string>
 builder.Services.Configure<EmailMessageServiceOptions>(builder.Configuration.GetSection("SMTP"));
 
 var app = builder.Build();
+
+// Logger Middleware (warstwa pośrednia)
+app.Use(async (context, next) => 
+{
+    Console.WriteLine($"[{DateTime.Now}] {context.Request.Method} {context.Request.Path}");
+   
+    await next();
+
+    System.Console.WriteLine($"[{DateTime.Now}] {context.Response.StatusCode}");
+});
+
+
+// Secret-Key Middleware (warstwa pośrednia)
+app.Use(async (context, next) => {
+
+ if (context.Request.Headers.TryGetValue("X-Secret-Key", out var secretKey) && secretKey == "123")
+ {
+    await next();
+ }
+ else
+    context.Response.StatusCode = StatusCodes.Status403Forbidden;
+
+});
 
 var lambda = () => "Hello from lambda variable";
 

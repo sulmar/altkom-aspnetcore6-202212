@@ -11,6 +11,7 @@ GET {{host}}/api/products
 ### Get product by id
 GET {{host}}/api/products/{{productId}}
 Content-Type: application/json
+X-Secret-Key: 123
 
 ### Get product by barcode
 GET {{host}}/api/products/{{barcode}}
