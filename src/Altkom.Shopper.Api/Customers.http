@@ -4,3 +4,4 @@
 
 ### Get customers
 GET {{host}}/api/customers
+X-Secret-Key: 123

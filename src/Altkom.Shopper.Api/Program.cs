@@ -31,7 +31,34 @@ builder.Host.UseSerilog((context, logger) =>
 
 builder.Services.AddSingleton<IProductRepository, InMemoryProductRepository>();
 builder.Services.AddSingleton<ICustomerRepository, InMemoryCustomerRepository>();
+builder.Services.AddSingleton<IUserRepository, InMemoryUserRepository>();
 
+builder.Services.AddSingleton<IEnumerable<User>>(sp => new List<User>
+{
+    new User { 
+        Id = 1, 
+        Username = "john", 
+        HashedPassword = "123", 
+        Email = "john@domain.com", 
+        DateOfBirth = DateTime.Parse("2000-12-31"),
+        },
+
+    new User { 
+        Id = 2, 
+        Username = "kate", 
+        HashedPassword = "321", 
+        Email = "kate@domain.com", 
+        DateOfBirth = DateTime.Parse("2010-12-31"),
+        },
+
+    new User { 
+        Id = 3, 
+        Username = "Bob", 
+        HashedPassword = "123", 
+        Email = "bob@domain.com", 
+        DateOfBirth = DateTime.Parse("1990-01-30"),
+        },
+});
 
 builder.Services.AddSingleton<IEnumerable<Product>>(sp => new List<Product>
 {
@@ -97,7 +124,8 @@ builder.Services.Configure<EmailMessageServiceOptions>(builder.Configuration.Get
 var app = builder.Build();
 
 app.UseLogger();
-app.UseSecretKey();
+// app.UseSecretKey();
+
 
 // Under construction Middleware
 // app.Run(async context => 

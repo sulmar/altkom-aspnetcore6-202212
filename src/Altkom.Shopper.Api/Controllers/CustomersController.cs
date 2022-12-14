@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Altkom.Shopper.Domain;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Altkom.Shopper.Api.Controllers;
 
@@ -48,12 +49,18 @@ public class CustomersController : ControllerBase
     }
 
     // GET api/customers
+    [Authorize]
     [HttpGet]
-    public IEnumerable<Customer> Get()
+    public ActionResult<IEnumerable<Customer>> Get()
     {
+        if (!this.User.Identity.IsAuthenticated)
+        {
+            return Unauthorized();
+        }
+
         var customers = repository.GetAll();
 
-        return customers;
+        return Ok(customers);
     }
 
     // GET api/customers/{id}

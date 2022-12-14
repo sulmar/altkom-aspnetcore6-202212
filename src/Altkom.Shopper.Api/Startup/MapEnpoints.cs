@@ -38,7 +38,8 @@ app.MapGet("/api/products/{id:int:max(100)}", (int id, IProductRepository reposi
     {
         Product product => Results.Ok(product),        
         null => Results.NotFound()        
-    }).WithName("GetProductById");
+    }).WithName("GetProductById")
+    .RequireAuthorization();
 
 // Route Parameters
 app.MapGet("/api/products/{barcode:length(4)}", (string barcode, IProductRepository repository) =>
