@@ -127,13 +127,8 @@ app.MapGet("/api/vehicles", (HttpContext context) =>
  
 });
 
-// TODO: MVC
 
 app.MapControllers();
-
-// TODO: konfiguracja
-// TODO: środowisko
-
 
 app.MapProducts();
 

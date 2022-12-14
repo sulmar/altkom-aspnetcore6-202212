@@ -1,0 +1,6 @@
+
+@host = https://localhost:7119
+
+
+### Get customers
+GET {{host}}/api/customers
