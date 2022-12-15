@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Altkom.Shopper.Infrastructu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Altkom.AuthService.Api", "Altkom.AuthService.Api\Altkom.AuthService.Api.csproj", "{CD7587A6-BC86-4A81-BC93-3D89B1A66799}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Altkom.Shopper.gRPCServer", "Altkom.Shopper.gRPCServer\Altkom.Shopper.gRPCServer.csproj", "{D0C93ED6-9988-4F48-912A-EF2CA0AC50AA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +44,9 @@ Global
 		{CD7587A6-BC86-4A81-BC93-3D89B1A66799}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CD7587A6-BC86-4A81-BC93-3D89B1A66799}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CD7587A6-BC86-4A81-BC93-3D89B1A66799}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0C93ED6-9988-4F48-912A-EF2CA0AC50AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0C93ED6-9988-4F48-912A-EF2CA0AC50AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0C93ED6-9988-4F48-912A-EF2CA0AC50AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0C93ED6-9988-4F48-912A-EF2CA0AC50AA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
