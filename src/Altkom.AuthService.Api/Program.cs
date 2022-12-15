@@ -14,7 +14,7 @@ builder.Services.AddSingleton<IEnumerable<User>>(sp => new List<User>
     new User { 
         Id = 1, 
         Username = "john", 
-        HashedPassword = "123", 
+        HashedPassword = "AQAAAAIAAYagAAAAEEGnl+/35TtTb8RTbz9j8TdKtRzy+EbfnEsPNKsjJz/mKjgDVy7zZK9aQHuVHkRuQQ==", 
         Email = "john@domain.com", 
         DateOfBirth = DateTime.Parse("2000-12-31"),
         },
@@ -22,7 +22,7 @@ builder.Services.AddSingleton<IEnumerable<User>>(sp => new List<User>
     new User { 
         Id = 2, 
         Username = "kate", 
-        HashedPassword = "321", 
+        HashedPassword = "AQAAAAIAAYagAAAAEO2EgnN2FfkSTEw4gab6CtcmYOs9H+P0c6JRcbMdfxS17Dx0wwnhb1froMte1wTYJQ==", 
         Email = "kate@domain.com", 
         DateOfBirth = DateTime.Parse("2010-12-31"),
         },
@@ -30,7 +30,7 @@ builder.Services.AddSingleton<IEnumerable<User>>(sp => new List<User>
     new User { 
         Id = 3, 
         Username = "Bob", 
-        HashedPassword = "123", 
+        HashedPassword = "AQAAAAIAAYagAAAAEN2jcUYIL4yE2zhWd69Q65TtDULGV3l3iCq5wW/ch+Nslt8AgW6rWbMfAIysHK5iag==", 
         Email = "bob@domain.com", 
         DateOfBirth = DateTime.Parse("1990-01-30"),
         },
