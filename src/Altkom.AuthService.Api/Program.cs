@@ -3,9 +3,11 @@ using Altkom.AuthService.Api.Infrastructure;
 using Altkom.AuthService.Api.Models;
 using Altkom.Shopper.Domain;
 using Altkom.Shopper.Infrastructure;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddSingleton<IPasswordHasher<User>, PasswordHasher<User>>();
 builder.Services.AddSingleton<IAuthService, AuthService>();
 builder.Services.AddSingleton<ITokenService, JwtTokenService>();
 builder.Services.AddSingleton<IUserRepository, InMemoryUserRepository>();
