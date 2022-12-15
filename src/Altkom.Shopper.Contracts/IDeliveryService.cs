@@ -10,7 +10,7 @@ namespace Altkom.Shopper.Contracts;
 public interface IDeliveryService
 {
     [OperationContract]
-    ConfirmDeliveryResponse ConfirmDeliveryAsync(ConfirmDeliveryRequest request, CallContext context); // dotnet add package protobuf-net.Grpc
+    Task<ConfirmDeliveryResponse> ConfirmDeliveryAsync(ConfirmDeliveryRequest request, CallContext context = default); // dotnet add package protobuf-net.Grpc
     
 }
 

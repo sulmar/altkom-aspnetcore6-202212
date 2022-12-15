@@ -25,6 +25,11 @@ app.MapGet("/", () => "Communication with gRPC endpoints must be made through a 
 // grpcurl --plaintext -d {\"book_id\":1}  localhost:5164 Inventory/SubscribeBookPriceChanged
 // grpcurl --plaintext -d {\"book_id\":1,\"page_current\":10}  localhost:5164 Inventory/UpdateBookProgress
 
+// dotnet tool install -g dotnet-grpc-cli
+// dotnet grpc-cli ls http://localhost:5164
+// dotnet grpc-cli ls http://localhost:5164 Inventory
+// dotnet grpc-cli dump http://localhost:5164 Inventory
+
 app.MapGrpcService<InventoryService>();
 
 if (app.Environment.IsDevelopment())
