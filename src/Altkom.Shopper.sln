@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Altkom.Shopper.gRPCServer",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Altkom.Shopper.gRPCConsoleClient", "Altkom.Shopper.gRPCConsoleClient\Altkom.Shopper.gRPCConsoleClient.csproj", "{EDFC1846-C175-496F-B452-28781140881C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Altkom.Shopper.Contracts", "Altkom.Shopper.Contracts\Altkom.Shopper.Contracts.csproj", "{BC2EB5B2-7D47-4643-A892-E5665973BDF6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,5 +56,9 @@ Global
 		{EDFC1846-C175-496F-B452-28781140881C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EDFC1846-C175-496F-B452-28781140881C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EDFC1846-C175-496F-B452-28781140881C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC2EB5B2-7D47-4643-A892-E5665973BDF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC2EB5B2-7D47-4643-A892-E5665973BDF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC2EB5B2-7D47-4643-A892-E5665973BDF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC2EB5B2-7D47-4643-A892-E5665973BDF6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

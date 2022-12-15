@@ -23,6 +23,7 @@ app.MapGet("/", () => "Communication with gRPC endpoints must be made through a 
 // grpcurl --plaintext -d {\"book_id\":1}  localhost:5164 Inventory/GetBook
 // grpcurl --plaintext  localhost:5164 Inventory/GetBooks
 // grpcurl --plaintext -d {\"book_id\":1}  localhost:5164 Inventory/SubscribeBookPriceChanged
+// grpcurl --plaintext -d {\"book_id\":1,\"page_current\":10}  localhost:5164 Inventory/UpdateBookProgress
 
 app.MapGrpcService<InventoryService>();
 

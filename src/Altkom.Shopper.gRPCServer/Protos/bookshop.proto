@@ -29,9 +29,6 @@ service Inventory {
     rpc GetBooks(GetBooksRequest) returns (GetBooksResponse);
     rpc SubscribeBookPriceChanged (SubscribeBookPriceChangedRequest) returns (stream BookPriceChangedResponse);
     rpc UpdateBookProgress (stream UpdateBookProgressRequest) returns (RecommendationResponse);
+    rpc DuplexBookProgress (stream UpdateBookProgressRequest) returns (stream UpdateBookProgressRequest);
 }
-
-
-
-
 

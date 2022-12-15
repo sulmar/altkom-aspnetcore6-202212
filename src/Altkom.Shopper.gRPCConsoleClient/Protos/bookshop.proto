@@ -18,6 +18,9 @@ message GetBooksResponse {
     repeated Book books = 1;
 }
 
+message UpdateBookProgressRequest { int32 book_id = 1; int32 page_current = 2; }
+message RecommendationResponse { int32 book_id = 1; }
+
 message SubscribeBookPriceChangedRequest { int32 book_id = 1; }
 message BookPriceChangedResponse { int32 book_id = 1; double price = 2; }
 
@@ -25,6 +28,7 @@ service Inventory {
     rpc GetBook(GetBookRequest) returns (Book);
     rpc GetBooks(GetBooksRequest) returns (GetBooksResponse);
     rpc SubscribeBookPriceChanged (SubscribeBookPriceChangedRequest) returns (stream BookPriceChangedResponse);
+    rpc UpdateBookProgress (stream UpdateBookProgressRequest) returns (RecommendationResponse);
 }
 
 

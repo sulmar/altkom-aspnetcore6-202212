@@ -12,7 +12,7 @@ namespace Altkom.Shopper.gRPCServer.Services
     {
         private readonly ILogger<InventoryService> logger;
 
-        publ ic InventoryService(ILogger<InventoryService> logger)
+        public InventoryService(ILogger<InventoryService> logger)
         {
             this.logger = logger;
         }
@@ -69,7 +69,7 @@ namespace Altkom.Shopper.gRPCServer.Services
 
         public override async Task SubscribeBookPriceChanged(SubscribeBookPriceChangedRequest request, IServerStreamWriter<BookPriceChangedResponse> responseStream,
             ServerCallContext context)
-        {
+        {            
 
             // dotnet add package Bogus
             var responses = new Faker<BookPriceChangedResponse>()
@@ -101,6 +101,11 @@ namespace Altkom.Shopper.gRPCServer.Services
             var response = new RecommendationResponse { BookId = book_id };
 
             return response;
+        }
+
+        public override Task DuplexBookProgress(IAsyncStreamReader<UpdateBookProgressRequest> requestStream, IServerStreamWriter<UpdateBookProgressRequest> responseStream, ServerCallContext context)
+        {
+            return base.DuplexBookProgress(requestStream, responseStream, context);
         }
     }
         
