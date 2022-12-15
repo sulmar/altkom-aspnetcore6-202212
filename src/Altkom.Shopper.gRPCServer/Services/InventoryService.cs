@@ -12,7 +12,7 @@ namespace Altkom.Shopper.gRPCServer.Services
     {
         private readonly ILogger<InventoryService> logger;
 
-        public InventoryService(ILogger<InventoryService> logger)
+        publ ic InventoryService(ILogger<InventoryService> logger)
         {
             this.logger = logger;
         }
@@ -84,6 +84,23 @@ namespace Altkom.Shopper.gRPCServer.Services
                 await responseStream.WriteAsync(response);
                 await Task.Delay(TimeSpan.FromSeconds(random.Next(1, 5)));
             }            
+        }
+
+        public override async Task<RecommendationResponse> UpdateBookProgress(IAsyncStreamReader<UpdateBookProgressRequest> requestStream, ServerCallContext context)
+        {
+            var bookProgressRequests = requestStream.ReadAllAsync();
+
+            await foreach(var bookProgressRequest in bookProgressRequests)
+            {
+                logger.LogInformation("BookId {BookId} PageCurrent {PageCurrent}", bookProgressRequest.BookId, bookProgressRequest.PageCurrent);
+            }
+
+            Random random = new Random();
+            var book_id =  random.Next(1, 10);
+
+            var response = new RecommendationResponse { BookId = book_id };
+
+            return response;
         }
     }
         
