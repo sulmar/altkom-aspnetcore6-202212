@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Bogus;
 using Bookshop;
 using Grpc.Core;
 
@@ -64,6 +65,25 @@ namespace Altkom.Shopper.gRPCServer.Services
             response.Books.AddRange(books);
 
             return Task.FromResult(response);
+        }
+
+        public override async Task SubscribeBookPriceChanged(SubscribeBookPriceChangedRequest request, IServerStreamWriter<BookPriceChangedResponse> responseStream,
+            ServerCallContext context)
+        {
+
+            // dotnet add package Bogus
+            var responses = new Faker<BookPriceChangedResponse>()
+                .RuleFor(p=>p.BookId, f=>f.Random.Int(1, 10))
+                .RuleFor(p=>p.Price, f=>f.Random.Double(1, 199))
+                .GenerateForever();
+
+            var random = new Random();
+
+            foreach(var response in responses.Where(b=>b.BookId == request.BookId))
+            {
+                await responseStream.WriteAsync(response);
+                await Task.Delay(TimeSpan.FromSeconds(random.Next(1, 5)));
+            }            
         }
     }
         
