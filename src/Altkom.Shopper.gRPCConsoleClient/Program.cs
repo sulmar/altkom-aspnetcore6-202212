@@ -17,33 +17,37 @@ var client = new Bookshop.Inventory.InventoryClient(channel);
 
 // await GetBookTest(client);
 // await ServerStreamingTest(client);
-
-var call = client.UpdateBookProgress();
-
-var requests = new Faker<Bookshop.UpdateBookProgressRequest>()
-    .RuleFor(p=>p.BookId, f => 1)
-    .RuleFor(p=>p.PageCurrent, f => f.IndexFaker)
-    .GenerateLazy(20);
-
-Random random = new Random();
-
-foreach(var request in requests)
-{
-    await call.RequestStream.WriteAsync(request);
-
-    System.Console.WriteLine($"Send book progress {request.BookId} {request.PageCurrent}");    
-    await Task.Delay(TimeSpan.FromSeconds(random.Next(1, 10)));
-}
-
-await call.RequestStream.CompleteAsync();
-
-var response = await call;
-
-System.Console.WriteLine($"Recommendation bookId {response.BookId}");
+await ClientStreamingTest(client);
 
 System.Console.WriteLine("Press any key to exit.");
 Console.ReadKey();
 
+async Task ClientStreamingTest(Bookshop.Inventory.InventoryClient client)
+{
+    var call = client.UpdateBookProgress();
+
+    var requests = new Faker<Bookshop.UpdateBookProgressRequest>()
+        .RuleFor(p=>p.BookId, f => 1)
+        .RuleFor(p=>p.PageCurrent, f => f.IndexFaker)
+        .GenerateLazy(20);
+
+    Random random = new Random();
+
+    foreach(var request in requests)
+    {
+        await call.RequestStream.WriteAsync(request);
+
+        System.Console.WriteLine($"Send book progress {request.BookId} {request.PageCurrent}");    
+        await Task.Delay(TimeSpan.FromSeconds(random.Next(1, 10)));
+    }
+
+    await call.RequestStream.CompleteAsync();
+
+    var response = await call;
+
+    System.Console.WriteLine($"Recommendation bookId {response.BookId}");
+
+}
 
 async Task ServerStreamingTest(Bookshop.Inventory.InventoryClient client)
 {
