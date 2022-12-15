@@ -12,9 +12,15 @@ message Book {
 }
 
 message GetBookRequest { int32 book_id = 1; }
+message GetBooksRequest {}
+
+message GetBooksResponse {
+    repeated Book books = 1;
+}
 
 service Inventory {
     rpc GetBook(GetBookRequest) returns (Book);
+    rpc GetBooks(GetBooksRequest) returns (GetBooksResponse);
 }
 
 
